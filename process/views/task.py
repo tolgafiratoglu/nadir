@@ -1,23 +1,23 @@
 from django.views.decorators.csrf import csrf_exempt
-
 import process.tasks as tasks
-
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 import json
-
 import numpy as np
+
+import csv
+import io
 
 @csrf_exempt
 def calculate(request):
-    data = request.POST.get('data')
-    rows = data.split(';')
-    data_arr = []
-    tasks.median.delay(data_arr)
-    for row in rows:
-        cols = row.split(',')
-        cols = [float(item) for item in cols]
-        data_arr.append(cols)
+    file_content = request.FILES['file'].read().decode("utf-8")
+    data = []
+    lines = file_content.split("\n")
+    for line in lines:
+        if line != "":
+            line_data = line.split(",")
+            line_data = [float(i) for i in line_data]
+            data.append(line_data)
     response = {
-        'median': tasks.median.delay(data_arr).id
+        'median': tasks.median.delay(data).id
     }
-    return HttpResponse(json.dumps(response))
+    return JsonResponse(response, safe=False)
