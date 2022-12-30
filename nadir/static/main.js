@@ -8,7 +8,7 @@ $(document).ready(
                 console.log(formData);
                 
                 $.ajax({
-                    url : 'http://127.0.0.1:8000/calculate',
+                    url : '/calculate',
                     type: 'POST',
                     data: formData,
                     async: false,
