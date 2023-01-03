@@ -1,6 +1,7 @@
-from django.http import HttpResponse
-from django.template import loader
+import random
+from django.shortcuts import render
 
 def home(request):
-    template = loader.get_template('index.html')
-    return HttpResponse(template.render())
+    return render(request, 'index.html', {
+        'randint': random.randrange(1, 1000),
+    })

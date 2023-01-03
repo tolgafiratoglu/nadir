@@ -9,9 +9,27 @@ $(document).ready(
             console.log('websocket initialized')
 
             socket.onmessage = function(e){
-                console.log('message recieved')
                 let data = JSON.parse(e.data)
-                console.log(data)
+                console.log(data);
+                if(data.type === 'task_results'){
+                    for (var result in data.results['SUCCESS']) {
+                        var processResult = '[' + data.results['SUCCESS'][result].toString() + ']'
+                        $("#task_" + result+" .result-text").html(processResult);
+                        $("#task_" + result+" .loading-icon").addClass('d-none');
+                        $("#task_" + result+" .check-icon").removeClass('d-none');
+                    }
+                    for (var result in data.results['FAILURE']) {
+                        $("#task_" + result+" .result-text").html('Task Failed');
+                        $("#task_" + result+" .loading-icon").addClass('d-none');
+                        $("#task_" + result+" .warning-icon").removeClass('d-none');
+                    }    
+                }
+            }
+        }
+
+        function initWorkerStatus (data) {
+            for(var key in data){
+                $("#task_results").append('<div id="task_' + key + '" class="task-result"><h6>'+key+'</h6><div><i class="loading-icon fas fa-spinner fa-spin"></i><i class="d-none warning-icon fa fa-exclamation-triangle" aria-hidden="true"></i><i class="check-icon d-none fa fa-check" aria-hidden="true"></i><span class="result-text">Processing task: "celery-task-meta-' +data[key]+ '"</span></div></div>')
             }
         }
 
@@ -19,7 +37,6 @@ $(document).ready(
             function(){
                 var formData = new FormData();
                 formData.append('file', $('#data_form')[0].files[0]);
-                console.log(formData);
                 
                 $.ajax({
                     url : '/calculate',
@@ -27,7 +44,7 @@ $(document).ready(
                     data: formData,
                     async: false,
                     success: function (data) {
-                        console.log(data)
+                        initWorkerStatus(data)
                         initWebsocket()
                     },
                     cache: false,

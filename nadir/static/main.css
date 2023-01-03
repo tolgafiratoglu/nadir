@@ -1,4 +1,20 @@
-.form-wrapper{
-    max-width: 600px;
+body{
+    background-color: #f5f5f5 !important;
+}
+
+.content-wrapper{
+    max-width: 700px;
     margin: 2rem auto;
 }
+
+.task-result{
+    border: 1px solid #f5f5f5;
+    background-color: #ffffff;
+    padding: 1em;
+    margin-bottom: 1em;
+    word-wrap: break-word;
+}
+
+.task-result span{
+    margin-left: 8px;
+}    

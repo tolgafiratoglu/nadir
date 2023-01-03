@@ -14,7 +14,20 @@ def calculate(request):
             line_data = [float(i) for i in line_data]
             data.append(line_data)
     task_ids = {
-        'median': tasks.median.delay(data).id
+        # Order Statistics:
+        'ptp': tasks.ptp.delay(data).id,
+        'percentile_per_25': tasks.percentile.delay(data, 25).id,
+        'percentile_per_50': tasks.percentile.delay(data, 50).id,
+        'percentile_per_75': tasks.percentile.delay(data, 75).id,
+        'nanpercentile_per_50': tasks.nanpercentile.delay(data, 50).id,
+        # Averages:
+        'median': tasks.median.delay(data).id,
+        'average': tasks.average.delay(data).id,
+        'mean': tasks.mean.delay(data).id,
+        'standard_deviation': tasks.std.delay(data).id,
+        'variance': tasks.var.delay(data).id,
+        'nanmedian': tasks.nanmedian.delay(data).id,
+        'nanmean': tasks.nanmean.delay(data).id,
     }
     cache.set('task_ids', task_ids)
     return JsonResponse(task_ids, safe=False)
