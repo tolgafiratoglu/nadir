@@ -1,17 +1,15 @@
 $(document).ready(
     function(){
         
-        function initWebsocket (taskList) {
+        function initWebsocket () {
             let url = "ws://" + window.location.host + "/ws/socket-server/"
 
             const socket = new WebSocket(url)
 
-            socket.onopen = function () {
-                console.log('init websocket')
-                socket.send(taskList)
-            }
+            console.log('websocket initialized')
 
             socket.onmessage = function(e){
+                console.log('message recieved')
                 let data = JSON.parse(e.data)
                 console.log(data)
             }
@@ -30,7 +28,7 @@ $(document).ready(
                     async: false,
                     success: function (data) {
                         console.log(data)
-                        initWebsocket(data)
+                        initWebsocket()
                     },
                     cache: false,
                     contentType: false,

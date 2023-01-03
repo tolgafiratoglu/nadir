@@ -1,11 +1,7 @@
 from django.views.decorators.csrf import csrf_exempt
 import process.tasks as tasks
-from django.http import HttpResponse, JsonResponse
-import json
-import numpy as np
-
-import csv
-import io
+from django.http import JsonResponse
+from django.core.cache import cache
 
 @csrf_exempt
 def calculate(request):
@@ -17,7 +13,8 @@ def calculate(request):
             line_data = line.split(",")
             line_data = [float(i) for i in line_data]
             data.append(line_data)
-    response = {
+    task_ids = {
         'median': tasks.median.delay(data).id
     }
-    return JsonResponse(response, safe=False)
+    cache.set('task_ids', task_ids)
+    return JsonResponse(task_ids, safe=False)
