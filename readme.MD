@@ -1,4 +1,6 @@
-Nadir is a practice project, an open source tool to analyse a large CSV file with statistical functions using Django, Celery, Numpy and websocket together. Celery process numpy functions parallel to each other. Websocket connection check celery task results to the main panel.
+Nadir is a practice project, an open source tool to analyse large CSV files with statistical functions using Django, Celery, Numpy and websocket together. Celery process numpy functions parallel to each other. Websocket connection check celery task results and feed the main panel. 
+
+This practice project aims to be educational for the power of Celery and teach new beginners about working with Django.
 
 <h6>Installation</h6>
 Here're the steps you will need to take after cloning the project to your local directory. We strongly recommend you to have a virtual environment:
