@@ -38,9 +38,11 @@ If Redis is not up and running, you may need to start redis server.
 
 If you want to see task keys in Redis:
 
-<code>redis-cli</code>
-<code>>keys *</code>
+<code>
+redis-cli
+keys *
+</code>
 
-You see the keys related with Celery. 
+You see the keys related with Celery. If you get one of them, you can see the result of the task. 
 
 Congrats! Now you can play and practice with the project. 
