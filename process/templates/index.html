@@ -17,20 +17,26 @@
                 <label for="data_form" class="form-label">CSV File</label>
                 <input class="form-control" type="file" id="data_form">
             </div>
-            <div class="form-check mt-3">
+            <div class="form-check mt-3 hide-after-action">
                 <input class="form-check-input" type="checkbox" value="" id="ignore_first_row">
                 <label class="form-check-label" for="ignore_first_row">
                     Ignore First Row
                 </label>
             </div>
-            <div class="form-check mt-3">
+            <div class="form-check mt-3 hide-after-action">
                 <input class="form-check-input" type="checkbox" value="" id="ignore_first_col">
                 <label class="form-check-label" for="ignore_first_col">
                     Ignore First Column
                 </label>
             </div>
-            <div class="mt-3" id="proceed_button">
+            <div class="mt-3 hide-after-action" id="proceed_button">
                 <button type="button" class="btn btn-primary btn-lg btn-block">Calculate</button>
+            </div>
+            <div class="alert alert-primary hide-after-upload d-none" role="alert">
+                <i class="fa fa-upload" aria-hidden="true"></i>Uploading CSV File
+            </div>
+            <div class="alert alert-primary show-after-upload d-none" role="alert">
+                <i class="fa fa-cogs fa-spin" aria-hidden="true"></i><spa class="no-workers"></span> workers started. Websocket connected.
             </div>
         </div>
         <div id="task_results" class="content-wrapper"></div>

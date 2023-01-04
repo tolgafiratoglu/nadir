@@ -6,12 +6,15 @@ $(document).ready(
 
             const socket = new WebSocket(url)
 
-            console.log('websocket initialized')
-
-            socket.onmessage = function(e){
+            socket.onmessage = function(e) {
                 let data = JSON.parse(e.data)
-                console.log(data);
+                console.log(data, window.numOfTasks);
+                
                 if(data.type === 'task_results'){
+                    if (window.numOfTasks === Object.keys(data.results['SUCCESS']).length) {
+                        socket.close()
+                    }
+                
                     for (var result in data.results['SUCCESS']) {
                         var processResult = '[' + data.results['SUCCESS'][result].toString() + ']'
                         $("#task_" + result+" .result-text").html(processResult);
@@ -34,18 +37,24 @@ $(document).ready(
         }
 
         $("#proceed_button").click(
-            function(){
+            function () {
                 var formData = new FormData();
                 formData.append('file', $('#data_form')[0].files[0]);
                 
+                $(".hide-after-action").addClass("d-none");
+                $(".hide-after-upload").removeClass("d-none");
+
                 $.ajax({
                     url : '/calculate',
                     type: 'POST',
                     data: formData,
                     async: false,
                     success: function (data) {
+                        window.numOfTasks = Object.keys(data).length
                         initWorkerStatus(data)
                         initWebsocket()
+                        $(".show-after-upload").removeClass("d-none");
+                        $(".hide-after-upload").addClass("d-none");
                     },
                     cache: false,
                     contentType: false,
