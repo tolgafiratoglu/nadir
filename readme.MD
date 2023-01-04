@@ -1,7 +1,7 @@
 Nadir is a practice project, an open source tool to analyse a large CSV file with statistical functions using Django, Celery, Numpy and websocket together. Celery process numpy functions parallel to each other. Websocket connection check celery task results to the main panel.
 
 <h6>Installation</h6>
-We strongly suggest to have a virtual environment:
+We strongly recommend you to have a virtual environment:
 
 <code>source venv/bin/activate</code>
 
@@ -30,5 +30,17 @@ As the third step, you need to start 2 services in the project folder:
 Open a new terminal tab, and run the following command in the project folder:
 
 <code>python3 manage.py runserver</code>
+
+<h6>Working with Redis</h6>
+If Redis is not up and running, you may need to start redis server. 
+
+<code>redis-server</code>
+
+If you want to see task keys in Redis:
+
+<code>redis-cli</code>
+<code>>keys *</code>
+
+You see the keys related with Celery. 
 
 Congrats! Now you can play and practice with the project. 
