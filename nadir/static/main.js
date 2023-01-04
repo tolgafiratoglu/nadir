@@ -12,6 +12,7 @@ $(document).ready(
                 
                 if(data.type === 'task_results'){
                     if (window.numOfTasks === Object.keys(data.results['SUCCESS']).length) {
+                        $('.show-after-upload').addClass('d-none')
                         socket.close()
                     }
                 
@@ -38,28 +39,34 @@ $(document).ready(
 
         $("#proceed_button").click(
             function () {
-                var formData = new FormData();
-                formData.append('file', $('#data_form')[0].files[0]);
-                
                 $(".hide-after-action").addClass("d-none");
                 $(".hide-after-upload").removeClass("d-none");
-
-                $.ajax({
-                    url : '/calculate',
-                    type: 'POST',
-                    data: formData,
-                    async: false,
-                    success: function (data) {
-                        window.numOfTasks = Object.keys(data).length
-                        initWorkerStatus(data)
-                        initWebsocket()
-                        $(".show-after-upload").removeClass("d-none");
-                        $(".hide-after-upload").addClass("d-none");
-                    },
-                    cache: false,
-                    contentType: false,
-                    processData: false
-                });
+                
+                var formData = new FormData();
+                formData.append('file', $('#data_form')[0].files[0]);
+                formData.append('ignore_first_row', $('#ignore_first_row').is(':checked'))
+                
+                setTimeout(
+                    function () {
+                        $.ajax({
+                            url : '/calculate',
+                            type: 'POST',
+                            data: formData,
+                            async: false,
+                            success: function (data) {
+                                window.numOfTasks = Object.keys(data).length
+                                initWorkerStatus(data)
+                                initWebsocket()
+                                $(".show-after-upload").removeClass("d-none");
+                                $('.no-workers').html(window.numOfTasks)
+                                $(".hide-after-upload").addClass("d-none");
+                            },
+                            cache: false,
+                            contentType: false,
+                            processData: false
+                        });
+                    }, 1000
+                )
             }
         );
 

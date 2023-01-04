@@ -6,8 +6,11 @@ from django.core.cache import cache
 @csrf_exempt
 def calculate(request):
     file_content = request.FILES['file'].read().decode("utf-8")
+    ignore_first_row = bool(request.POST.get('ignore_first_row'))
     data = []
     lines = file_content.split("\n")
+    if ignore_first_row == True:
+        lines.pop(0)
     for line in lines:
         if line != "":
             line_data = line.split(",")
@@ -27,7 +30,7 @@ def calculate(request):
         'standard_deviation': tasks.std.delay(data).id,
         'variance': tasks.var.delay(data).id,
         'nanmedian': tasks.nanmedian.delay(data).id,
-        'nanmean': tasks.nanmean.delay(data).id,
+        'nanmean': tasks.nanmean.delay(data).id
     }
     cache.set('task_ids', task_ids)
     return JsonResponse(task_ids, safe=False)
